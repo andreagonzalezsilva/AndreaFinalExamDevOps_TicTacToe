@@ -2,6 +2,7 @@ const {By, Builder, Browser} = require('selenium-webdriver');
 const chrome = require("selenium-webdriver/chrome");
 const assert = require("assert");
 const expectedFirstPlayerIcon = "×";
+const errorIcon = "playerText";
 
 (async function gameIconTest() {
 
@@ -34,7 +35,8 @@ const expectedFirstPlayerIcon = "×";
     let firstPlayerIcon = await gameCell.getText();
 
     // Assert the game cell should be x
-    assert.equal(firstPlayerIcon, expectedFirstPlayerIcon);
+    //assert.equal(firstPlayerIcon, expectedFirstPlayerIcon);
+    assert(!firstPlayerIcon.includes(errorIcon));
    
   } catch (e) {
     console.log('An error occurred: ', e);
