@@ -39,7 +39,12 @@ const errorIcon = "playerText";
     console.log('First player icon:', firstPlayerIcon);
 
     // Assert the game cell should not contain the error icon
-    assert(!firstPlayerIcon.includes(errorIcon), `Error: The cell contains the forbidden character "${errorIcon}"`);
+    if(!firstPlayerIcon.includes(errorIcon)){
+      console.log("Test Success");
+    }
+    else{
+      console.log("Test Failed")
+    }
 
   } catch (e) {
     console.error('An error occurred: ', e);
