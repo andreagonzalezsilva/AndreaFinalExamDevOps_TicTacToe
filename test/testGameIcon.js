@@ -1,51 +1,84 @@
-const {By, Builder, Browser} = require('selenium-webdriver');
+const { By, Key, Builder } = require("selenium-webdriver");
+
 const chrome = require("selenium-webdriver/chrome");
-const assert = require("assert");
-const expectedFirstPlayerIcon = "x";
-const errorIcon = "playerText";
 
-(async function gameIconTest() {
 
-  // Set Chrome option
-  let options = new chrome.Options();
-  options.addArguments('headless');
-  options.addArguments('disable-gpu');
-  options.setChromeBinaryPath('/usr/bin/google-chrome');
 
-  let driver;
+async function test_case() {
 
-  try {
-    driver = await new Builder().forBrowser("chrome").setChromeOptions(options).build();
-    await driver.get('http://54.196.103.148/');
+    // Set Chrome options
 
-    // Maxime the window
-    driver.manage().window().maximize();
-    await driver.manage().setTimeouts({implicit: 500});
+    let options = new chrome.Options();
 
-    // Create the first window element
-    let gamePreferencesWindow = await driver.findElement(By.className('modal-content'));
-    let playBtn = await driver.findElement(By.id('okBtn'));
+    options.addArguments('headless');
 
-    // Click on the play button 
-    playBtn.click();
+    options.addArguments('disable-gpu');
 
-    // Start the game putting the expected X in the superior left corner
-    let gameCell = await driver.findElement(By.id('cell0'));
-    gameCell.click();
-    let firstPlayerIcon = await gameCell.getText();
+    options.setChromeBinaryPath('/usr/bin/google-chrome');
 
-    // Assert the game cell should be x
-    if(!firstPlayerIcon.includes(errorIcon)){
-      console.log("Test Success");
+
+
+    // Create a driver
+
+    let driver = await new Builder().forBrowser("chrome").setChromeOptions(options).build();
+
+
+
+    try {
+
+        // Send driver to website
+
+        await driver.get("http://3.81.20.62/");
+        await driver.sleep(1000);
+
+        let playButton = await driver.findElement(By.id('okBtn'));
+        await playButton.click();
+
+        // Find and click on a cell
+        let cell = await driver.findElement(By.id('cell0'));
+        await cell.click();
+
+
+
+
+        // Wait for a brief moment to ensure the update is reflected (adjust as necessary)
+
+        await driver.sleep(1000);
+
+
+
+        // Check the content of the cell after click
+
+        let cellContent = await cell.getAttribute('innerHTML');
+
+        console.log('Cell content:', cellContent);
+
+
+
+        // Check if it shows "<span class=\"x\">&times;</span>"
+
+        if (cellContent.trim() === '<span class="x">×</span>') {
+
+            console.log('Test Success');
+
+        } else {
+
+            console.log('Test Failed');
+
+        }
+
+    } catch (error) {
+
+        console.log('An error occurred:', error);
+
+    } finally {
+
+        await driver.quit();
+
     }
-    else{
-      console.log("Test Failed")
-    }
-    //assert.equal(firstPlayerIcon, expectedFirstPlayerIcon);
 
-  } catch (e) {
-    console.log('An error occurred: ', e);
-  } finally {
-      await driver.quit();
-  }
-}())
+}
+
+
+
+test_case();
