@@ -1,7 +1,7 @@
 const {By, Builder, Browser} = require('selenium-webdriver');
 const chrome = require("selenium-webdriver/chrome");
 const assert = require("assert");
-const expectedFirstPlayerIcon = "x";
+const expectedFirstPlayerIcon = "×";
 
 (async function gameIconTest() {
 
